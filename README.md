@@ -35,6 +35,3 @@ We take the security of GlimWorldGames seriously. If you discover a vulnerabilit
 - Email: **lomov0@eq.edu.au** or **github.com**
 - Preferred language: **English**
 - Please **do not publicly disclose** vulnerabilities before they are fixed
-
-A formal `security.txt` file is available at:
-
