@@ -643,7 +643,7 @@ function runSpeedRacing(container,onScore,onComplete){
     else if(keys.KeyS||keys.ArrowDown)speed=Math.max(-.1,speed-.015);
     else speed=Math.max(0,speed-.003);
     if(speed>.01){if(keys.KeyA||keys.ArrowLeft)angle+=.035*(speed/.35);if(keys.KeyD||keys.ArrowRight)angle-=.035*(speed/.35);}
-    player.rotation.y=angle;player.position.x+=Math.sin(angle)*speed;player.position.z-=Math.cos(angle)*speed;
+    player.rotation.y=angle;player.position.x-=Math.sin(angle)*speed;player.position.z-=Math.cos(angle)*speed;
     player.position.x=Math.max(-RW/2+1,Math.min(RW/2-1,player.position.x));
     opps.forEach((o,i)=>{const tx=Math.sin(Date.now()*.0005+i)*4;o.position.x+=(tx-o.position.x)*.02;o.position.z-=oppSpeeds[i]+.02*Math.sin(Date.now()*.001+i);if(o.position.z<FINISH_Z-5)o.position.z=-2;});
     const pos=1+opps.filter(o=>o.position.z<player.position.z).length;
@@ -651,7 +651,7 @@ function runSpeedRacing(container,onScore,onComplete){
     const posLabel=['','1st 🥇','2nd 🥈','3rd 🥉','4th'][pos]||pos+'th';
     onScore('🏎️ '+kmh+'km/h | '+posLabel);
     if(Math.abs(player.position.z-FINISH_Z)<3){const r=pos===1?50:pos===2?30:pos===3?15:5;addCoins(r);onComplete(['','🥇','🥈','🥉',''][pos]+' Finished '+posLabel+'! +'+r+' coins!');running=false;}
-    const camOff=new THREE.Vector3(-Math.sin(angle)*10,4,Math.cos(angle)*10);
+    const camOff=new THREE.Vector3(+Math.sin(angle)*10,4,Math.cos(angle)*10);
     camera.position.lerp(player.position.clone().add(camOff),.08);camera.lookAt(player.position);renderer.render(scene,camera);
   }
   animate();
