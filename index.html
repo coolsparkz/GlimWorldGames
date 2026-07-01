@@ -643,7 +643,7 @@ function runSpeedRacing(container,onScore,onComplete){
     else if(keys.KeyS||keys.ArrowDown)speed=Math.max(-.1,speed-.015);
     else speed=Math.max(0,speed-.003);
     if(speed>.01){if(keys.KeyA||keys.ArrowLeft)angle+=.035*(speed/.35);if(keys.KeyD||keys.ArrowRight)angle-=.035*(speed/.35);}
-    player.rotation.y=angle;player.position.x+=Math.sin(angle)*speed;player.position.z-=Math.cos(angle)*speed;
+    player.rotation.y=angle;player.position.x-=Math.sin(angle)*speed;player.position.z-=Math.cos(angle)*speed;
     player.position.x=Math.max(-RW/2+1,Math.min(RW/2-1,player.position.x));
     opps.forEach((o,i)=>{const tx=Math.sin(Date.now()*.0005+i)*4;o.position.x+=(tx-o.position.x)*.02;o.position.z-=oppSpeeds[i]+.02*Math.sin(Date.now()*.001+i);if(o.position.z<FINISH_Z-5)o.position.z=-2;});
     const pos=1+opps.filter(o=>o.position.z<player.position.z).length;
@@ -651,7 +651,7 @@ function runSpeedRacing(container,onScore,onComplete){
     const posLabel=['','1st 🥇','2nd 🥈','3rd 🥉','4th'][pos]||pos+'th';
     onScore('🏎️ '+kmh+'km/h | '+posLabel);
     if(Math.abs(player.position.z-FINISH_Z)<3){const r=pos===1?50:pos===2?30:pos===3?15:5;addCoins(r);onComplete(['','🥇','🥈','🥉',''][pos]+' Finished '+posLabel+'! +'+r+' coins!');running=false;}
-    const camOff=new THREE.Vector3(-Math.sin(angle)*10,4,Math.cos(angle)*10);
+    const camOff=new THREE.Vector3(+Math.sin(angle)*10,4,Math.cos(angle)*10);
     camera.position.lerp(player.position.clone().add(camOff),.08);camera.lookAt(player.position);renderer.render(scene,camera);
   }
   animate();
@@ -1017,7 +1017,13 @@ function runBubblePop(container,onScore,onComplete){
     bubbles.forEach(b=>{if(!b.mesh.visible)return;b.mesh.position.add(b.vel);b.phase+=.02;b.mesh.position.y+=Math.sin(b.phase)*.008;if(b.mesh.position.y>12)b.mesh.position.y=.5;b.mesh.position.x=((b.mesh.position.x+30)%60)-30;b.mesh.position.z=((b.mesh.position.z+30)%60)-30;if(b.mesh.position.distanceTo(player.position)<b.r+.8){b.mesh.visible=false;popped++;addCoins(3);if(popped>=TOTAL){addCoins(50);onComplete('🫧 All bubbles! +50 bonus!');running=false;}}});
     onScore('🫧 '+popped+'/'+TOTAL+' bubbles popped!');
     camera.position.lerp(player.position.clone().add(new THREE.Vector3(0,9,13)),.09);camera.lookAt(player.position);renderer.render(scene,camera);
+    camera.lookAt(player.position);
+    renderer.render(scene, camera);
   }
+
+
+
+  
   animate();
   const onResize=()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);};
   window.addEventListener('resize',onResize);
@@ -1189,7 +1195,7 @@ function runRainbowRoad(container,onScore,onComplete){
     cpus.forEach(c=>{c.t+=c.speed;if(c.t>=1){c.t-=1;c.segIdx=Math.min(c.segIdx+1,SEGS-2);}const p=segPos(c.segIdx,c.t);p.y+=.5;c.kart.position.copy(p);const np=segPos(c.segIdx,c.t+.05);const d=np.clone().sub(p).normalize();c.kart.rotation.y=Math.atan2(d.x,d.z)+Math.PI;});
     if(pSegIdx>=SEGS-3){const pos2=1+cpus.filter(c=>c.segIdx>pSegIdx).length;addCoins(pos2===1?60:pos2===2?35:15);onComplete('🌈 Finished! '+'🥇🥈🥉'[pos2-1]||'4th'+' place!');running=false;}
     const pct=Math.round(((pSegIdx+pT)/SEGS)*100);const p2=1+cpus.filter(c=>c.segIdx>pSegIdx).length;onScore('🌈 '+pct+'% | Pos: '+(['🥇','🥈','🥉','4th'][p2-1]||'?'));
-    const camBehind=new THREE.Vector3(-Math.sin(player.rotation.y)*10,4,-Math.cos(player.rotation.y)*10);
+    const camBehind=new THREE.Vector3(Math.sin(player.rotation.y)*10,4,Math.cos(player.rotation.y)*10);
     camera.position.lerp(player.position.clone().add(camBehind),.09);camera.lookAt(player.position);renderer.render(scene,camera);
   }
   animate();
