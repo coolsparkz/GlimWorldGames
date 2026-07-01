@@ -31,6 +31,11 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit;}
 .float{animation:float 3s ease-in-out infinite;}
 .glow{animation:pulse-glow 2s ease-in-out infinite;}
 .slide-up{animation:slide-up .35s ease-out forwards;}
+.modal{display: none;position: fixed;z-index: 1;left: 0;top: 0;width: 100%;height: 100%;overflow: auto;background-color: rgb(0,0,0);background-color: rgba(0,0,0,0.4);}
+.modal-content{background-color: black;margin: 15% auto;padding: 20px;border: 1px solid #888;width: 80%;}
+.close{color: #aaa;float: right;font-size: 28px;font-weight: bold;}
+.close:hover,
+.close:focus{color: black;text-decoration: none;cursor: pointer;}
 
 /* HOME */
 #screen-home{background:var(--bg);align-items:center;justify-content:center;gap:24px;}
@@ -48,6 +53,7 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit;}
 #play-btn svg{width:44px;height:44px;fill:var(--primary-fg);}
 #home-stats{display:flex;gap:12px;color:var(--muted-fg);font-size:.9rem;}
 #home-stats span:nth-child(even){opacity:.4;}
+
 
 /* GAMES */
 #screen-games{background:var(--bg);}
@@ -108,6 +114,7 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit;}
 </head>
 <body>
 
+  
 <!-- STARS -->
 <div class="stars" id="stars"></div>
 
@@ -130,7 +137,7 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit;}
     <div style="font-size:5rem;" class="float">🌟</div>
     <div id="home-title">GlimWorld</div>
     <div id="home-sub">21 mini-games. Earn coins. Be the best.</div>
-    <button id="play-btn" class="glow" onclick="showGames()">
+    <button id="play-btn" class="glow">
       <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
     </button>
     <div id="home-stats">
@@ -139,6 +146,37 @@ button{cursor:pointer;border:none;outline:none;font-family:inherit;}
       <span>7 Trails</span>
     </div>
   </div>
+</div>
+
+<div id="popup" class="modal">
+<div class="modal-content">
+  <span class="close">&times;</span>
+  <p>GlimWorld Games is a work in progress. If you encounter any issues, please report them to <a href="https://github.com/coolsparkz/GlimWorldGames/issues">our github repository</a>.</p>
+</div>
+
+<script>
+var modal = document.getElementById("popup");
+
+var btn = document.getElementById("play-btn");
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  showGames()
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+  
 </div>
 
 <!-- GAMES SCREEN -->
